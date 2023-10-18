@@ -29,13 +29,7 @@ function App() {
           <code>{error}</code>
         </p>
       )}
-      <a
-        href="https://developers.line.biz/ja/docs/liff/"
-        target="_blank"
-        rel="noreferrer"
-      >
         LIFF Documentation
-      </a>
     </div>
   );
 }
