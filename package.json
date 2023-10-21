@@ -1,16 +1,13 @@
 {
   "name": "liff",
-  "version": "0.0.2",
-  "homepage": "https://iineineno03k.github.io/original-specialmove/",
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "deploy": "gh-pages -d dist -t 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"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@line/liff": "2.22.4",
-    "gh-pages": "^6.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
