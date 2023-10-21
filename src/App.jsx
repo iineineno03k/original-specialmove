@@ -49,16 +49,16 @@ function App() {
       formData.append('description', description);
       formData.append('image', image);
 
-      fetch('https://example.com/your-api-endpoint', {
+      fetch('http://localhost:8080/regist', {
         method: 'POST',
         body: formData,
       })
         .then((response) => {
           // APIの応答を処理
           if (response.ok) {
-            // 送信成功の処理
+            console.log("成功");
           } else {
-            // 送信エラーの処理
+            console.log("失敗");
           }
         })
         .catch((error) => {
