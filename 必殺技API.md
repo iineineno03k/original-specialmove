@@ -9,7 +9,7 @@
     - furigana
     - heading
     - description
-    - picture
+    - image
     - battle-count
     - win-count
     - lose-count
@@ -65,7 +65,7 @@
         - 難しい漢字に使うとかではない点に注意
     - heading : 一言見出し
     - description : 必殺技詳細
-    - picture : 画像
+    - image : 画像
         - 画像はbase64エンコードしてDBに保存。取得時にデコードする。
     - [レスポンス]
     - なし
@@ -79,7 +79,7 @@
         - furigana : フリガナ
         - heading : 一言見出し
         - description : 必殺技詳細
-        - picture : 画像
+        - image : 画像
             - 取得後フロント側でbase64デコードを行う。
 - 対戦結果反映API
     - [リクエスト]
