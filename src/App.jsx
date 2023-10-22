@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Container, TextField, Button, Box } from '@mui/material';
+import { Container, TextField, Button, Box } from '@mui/material';
 import AvatarEditor from 'react-avatar-editor';
 
 function App() {
@@ -151,11 +151,6 @@ function App() {
         />
         <br />
         <input type="file" accept="image/*" onChange={handleImageChange} />
-
-        <Box width="35%">
-          <img src={image.croppedImg} style={{ width: '200px', height: '200px' }} />
-        </Box>
-
         {image.cropperOpen && (
           <div>
             <AvatarEditor
@@ -179,6 +174,11 @@ function App() {
             <button onClick={handleSave}>切り取る</button>
           </div>
         )}
+
+        <Box width="35%">
+          <img src={image.croppedImg} style={{ width: '200px', height: '200px' }} />
+        </Box>
+
 
         <Box mt={2}>
           <Button variant="contained" color="primary" onClick={handleConfirmation}>
