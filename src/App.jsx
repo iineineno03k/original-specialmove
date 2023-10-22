@@ -114,31 +114,15 @@ function App() {
         .then((response) => {
           // APIの応答を処理
           if (response.ok) {
-            sendLineMessage('登録完了');
             liff.closeWindow();
           } else {
-            sendLineMessage('登録失敗');
             liff.closeWindow();
           }
         })
         .catch((error) => {
           console.error('APIリクエストエラー', error);
-          sendLineMessage('登録失敗');
           liff.closeWindow();
         });
-    }
-  };
-
-  const sendLineMessage = async (message) => {
-    try {
-      await liff.sendMessages([
-        {
-          type: 'text',
-          text: message,
-        },
-      ]);
-    } catch (error) {
-      console.error('LINEメッセージ送信エラー', error);
     }
   };
 
