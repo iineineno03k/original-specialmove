@@ -51,12 +51,12 @@ function App() {
         })
       }
     }
-    const initializeLiff = async (liffId) => {
+    const initializeLiff = async (id) => {
       if (!liff.isLoggedIn()) {
-        liff.login();
+        liff.login(id);
       } else {
-        clearExpiredIdToken(liffId)
-        await liff.init({ liffId })
+        clearExpiredIdToken()
+        await liff.init({ liffId: id })
         const token = liff.getIDToken()
         setIdToken(token);
       }
