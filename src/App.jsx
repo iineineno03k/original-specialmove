@@ -23,21 +23,41 @@ function App() {
   const [descriptionError, setDescriptionError] = useState('');
 
   useEffect(() => {
-    const initializeLiff = async () => {
-      try {
-        await liff.init({ liffId: '2001116233-KA7Znp4R' });
-        if (!liff.isLoggedIn()) {
-          liff.login();
-        } else {
-          const token = liff.getIDToken();
-          console.log(token);
-          setIdToken(token);
+    // liff関連のlocalStorageのキーのリストを取得
+    const getLiffLocalStorageKeys = (prefix) => {
+      const keys = []
+      for (var i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i)
+        if (key.indexOf(prefix) === 0) {
+          keys.push(key)
         }
-      } catch (error) {
-        console.error('LIFF initialization failed', error);
       }
-    };
-    initializeLiff();
+      return keys
+    }
+    // 期限切れのIDTokenをクリアする
+    const clearExpiredIdToken = (liffId) => {
+      const keyPrefix = `LIFF_STORE:${liffId}:`
+      const key = keyPrefix + 'decodedIDToken'
+      const decodedIDTokenString = localStorage.getItem(key)
+      if (!decodedIDTokenString) {
+        return
+      }
+      const decodedIDToken = JSON.parse(decodedIDTokenString)
+      // 有効期限をチェック
+      if (new Date().getTime() > decodedIDToken.exp * 1000) {
+        const keys = getLiffLocalStorageKeys(keyPrefix)
+        keys.forEach(function (key) {
+          localStorage.removeItem(key)
+        })
+      }
+    }
+    const initializeLiff = async (liffId) => {
+      clearExpiredIdToken(liffId)
+      await liff.init({ liffId })
+      const token = liff.getIDToken()
+      setIdToken(token);
+    }
+    initializeLiff('2001116233-KA7Znp4R');
   }, []);
 
   const handleImageChange = (e) => {
