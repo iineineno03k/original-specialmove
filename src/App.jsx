@@ -25,7 +25,7 @@ function App() {
   useEffect(() => {
     const initializeLiff = async () => {
       try {
-        await liff.init({ liffId: import.meta.env.VITE_LIFF_ID });
+        await liff.init({ liffId: '2001116233-KA7Znp4R' });
         if (!liff.isLoggedIn()) {
           liff.login();
         } else {
