@@ -52,10 +52,14 @@ function App() {
       }
     }
     const initializeLiff = async (liffId) => {
-      clearExpiredIdToken(liffId)
-      await liff.init({ liffId })
-      const token = liff.getIDToken()
-      setIdToken(token);
+      if (!liff.isLoggedIn()) {
+        liff.login();
+      } else {
+        clearExpiredIdToken(liffId)
+        await liff.init({ liffId })
+        const token = liff.getIDToken()
+        setIdToken(token);
+      }
     }
     initializeLiff('2001116233-KA7Znp4R');
   }, []);
