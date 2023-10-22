@@ -88,7 +88,7 @@ function App() {
       formData.append('image', file);
       formData.append('idToken', "todo");
 
-      fetch('http://localhost:8080/regist', {
+      fetch('https://original-specialmove.onrender.com/regist', {
         method: 'POST',
         body: formData,
       })
