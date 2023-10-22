@@ -30,6 +30,7 @@ function App() {
           liff.login();
         } else {
           const token = liff.getIDToken();
+          console.log(token);
           setIdToken(token);
         }
       } catch (error) {
@@ -102,7 +103,6 @@ function App() {
         .then(response => response.blob())
         .then(blob => {
           file = new File([blob], "sample.png", { type: blob.type })
-          console.log(file)    //Fileオブジェクト
         })
       formData.append('image', file);
       formData.append('idToken', idToken);
