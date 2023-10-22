@@ -45,7 +45,7 @@ function App() {
     }
   };
 
-  const handleConfirmation = () => {
+  const handleConfirmation = async () => {
     if (image.cropperOpen) {
       //切り取り中にAPIを走らせない。→強制で200×200にさせる
       return;
@@ -78,18 +78,14 @@ function App() {
       formData.append('furigana', furigana);
       formData.append('heading', heading);
       formData.append('description', description);
-      fetch(image.croppedImg)
+      var file;
+      await fetch(image.croppedImg)
         .then(response => response.blob())
         .then(blob => {
-          const fileExtension = image.croppedImg.split('.').pop(); // 拡張子を取得
-          const fileName = 'cropped_image.' + fileExtension; // ファイル名を設定
-          const fileType = fileExtension === 'jpg' ? 'image/jpeg' : 'image/png'; // フォーマットを設定
-          const file = new File([blob], fileName, { type: fileType });
-          formData.append('image', file);
+          file = new File([blob], "sample.png", { type: blob.type })
+          console.log(file)    //Fileオブジェクト
         })
-        .catch(error => {
-          console.error('画像のダウンロード中にエラーが発生しました:', error);
-        });
+      formData.append('image', file);
       formData.append('idToken', "todo");
 
       fetch('http://localhost:8080/regist', {
