@@ -23,16 +23,21 @@ function App() {
   const [descriptionError, setDescriptionError] = useState('');
 
   useEffect(() => {
-    liff
-      .init({
-        liffId: import.meta.env.VITE_LIFF_ID,
-      })
-      .then(() => {
-        const token = liff.getIDToken();
-        setIdToken(token);
-        console.log(idToken);
-      });
-  });
+    const initializeLiff = async () => {
+      try {
+        await liff.init({ liffId: import.meta.env.VITE_LIFF_ID });
+        if (!liff.isLoggedIn()) {
+          liff.login();
+        } else {
+          const token = liff.getIDToken();
+          setIdToken(token);
+        }
+      } catch (error) {
+        console.error('LIFF initialization failed', error);
+      }
+    };
+    initializeLiff();
+  }, []);
 
   const handleImageChange = (e) => {
     let url = URL.createObjectURL(e.target.files[0]);
@@ -109,15 +114,31 @@ function App() {
         .then((response) => {
           // APIの応答を処理
           if (response.ok) {
-            console.log("成功");
+            sendLineMessage('登録完了');
+            liff.closeWindow();
           } else {
-            console.log("失敗");
+            sendLineMessage('登録失敗');
+            liff.closeWindow();
           }
         })
         .catch((error) => {
-          // エラーハンドリング
-          console.error('APIエラー:', error);
+          console.error('APIリクエストエラー', error);
+          sendLineMessage('登録失敗');
+          liff.closeWindow();
         });
+    }
+  };
+
+  const sendLineMessage = async (message) => {
+    try {
+      await liff.sendMessages([
+        {
+          type: 'text',
+          text: message,
+        },
+      ]);
+    } catch (error) {
+      console.error('LINEメッセージ送信エラー', error);
     }
   };
 
