@@ -15,10 +15,21 @@ function App() {
     croppedImg:
       "https://pub-5c00d9cd767343259424b03f8a52941a.r2.dev/noimage.png"
   });
+  const [idToken, setIdToken] = useSate('');
   const [scale, setScale] = useState(1.0); // 画像の拡大率
   const [noteError, setNoteError] = useState('');
   const [nameError, setNameError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
+
+  liff
+    .init({
+      liffId: VITE_LIFF_ID,
+    })
+    .then(() => {
+      const token = liff.getIDToken();
+      setIdToken(token);
+      console.log(idToken);
+    });
 
   const handleImageChange = (e) => {
     let url = URL.createObjectURL(e.target.files[0]);
@@ -86,7 +97,7 @@ function App() {
           console.log(file)    //Fileオブジェクト
         })
       formData.append('image', file);
-      formData.append('idToken', "todo");
+      formData.append('idToken', idToken);
 
       fetch('https://original-specialmove.onrender.com/regist', {
         method: 'POST',
