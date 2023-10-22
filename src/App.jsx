@@ -1,18 +1,56 @@
 import React, { useState } from 'react';
-import { Container, TextField, TextareaAutosize, Button, Box } from '@mui/material';
+import { Avatar, Container, TextField, Button, Box } from '@mui/material';
+import AvatarEditor from 'react-avatar-editor';
 
 function App() {
+  var editor = "";
   const [name, setName] = useState('');
   const [furigana, setFurigana] = useState('');
   const [heading, setHeading] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState({
+    cropperOpen: false,
+    img: null,
+    zoom: 2,
+    croppedImg:
+      "https://pub-5c00d9cd767343259424b03f8a52941a.r2.dev/noimage.png"
+  });
+  const [scale, setScale] = useState(1.0); // 画像の拡大率
   const [noteError, setNoteError] = useState('');
   const [nameError, setNameError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
-  const [imageError, setImageError] = useState('');
+
+  const handleImageChange = (e) => {
+    let url = URL.createObjectURL(e.target.files[0]);
+    setImage({
+      ...image,
+      img: url,
+      cropperOpen: true
+    });
+  };
+  const setEditorRef = (ed) => {
+    editor = ed;
+  };
+  const handleSave = (e) => {
+    if (setEditorRef) {
+      const canvasScaled = editor.getImageScaledToCanvas();
+      const croppedImg = canvasScaled.toDataURL();
+
+      setImage({
+        ...image,
+        img: null,
+        cropperOpen: false,
+        croppedImg: croppedImg
+      });
+    }
+  };
 
   const handleConfirmation = () => {
+    if (image.cropperOpen) {
+      //切り取り中にAPIを走らせない。→強制で200×200にさせる
+      return;
+    }
+
     if (!name) {
       setNameError('名前は必須項目です.');
       return;
@@ -34,20 +72,25 @@ function App() {
       setDescriptionError('');
     }
 
-    if (!image) {
-      setImageError('写真は必須項目です.');
-      return;
-    } else {
-      setImageError('');
-    }
-
     if (name && heading && description && image) {
       const formData = new FormData();
       formData.append('name', name);
       formData.append('furigana', furigana);
       formData.append('heading', heading);
       formData.append('description', description);
-      formData.append('image', image);
+      fetch(image.croppedImg)
+        .then(response => response.blob())
+        .then(blob => {
+          const fileExtension = image.croppedImg.split('.').pop(); // 拡張子を取得
+          const fileName = 'cropped_image.' + fileExtension; // ファイル名を設定
+          const fileType = fileExtension === 'jpg' ? 'image/jpeg' : 'image/png'; // フォーマットを設定
+          const file = new File([blob], fileName, { type: fileType });
+          formData.append('image', file);
+        })
+        .catch(error => {
+          console.error('画像のダウンロード中にエラーが発生しました:', error);
+        });
+      formData.append('idToken', "todo");
 
       fetch('http://localhost:8080/regist', {
         method: 'POST',
@@ -107,17 +150,36 @@ function App() {
           helperText={descriptionError}
         />
         <br />
-        <input
-          type="file"
-          onChange={(e) => {
-            setImage(e.target.files[0]);
-            setImageError('');
-          }}
-        />
-        {imageError && (
-          <p style={{ color: 'red' }}>{imageError}</p>
+        <input type="file" accept="image/*" onChange={handleImageChange} />
+
+        <Box width="35%">
+          <img src={image.croppedImg} style={{ width: '200px', height: '200px' }} />
+        </Box>
+
+        {image.cropperOpen && (
+          <div>
+            <AvatarEditor
+              ref={setEditorRef}
+              image={image.img}
+              width={200} // 画像エディタの幅
+              height={200} // 画像エディタの高さ
+              border={10} // 画像エディタのボーダー
+              scale={scale}
+            />
+            <div>
+              <input
+                type="range"
+                min="1"
+                max="2"
+                step="0.01"
+                value={scale}
+                onChange={(e) => setScale(parseFloat(e.target.value))}
+              />
+            </div>
+            <button onClick={handleSave}>切り取る</button>
+          </div>
         )}
-        <br />
+
         <Box mt={2}>
           <Button variant="contained" color="primary" onClick={handleConfirmation}>
             確認
