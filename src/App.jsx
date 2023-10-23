@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, TextField, Button, Box } from '@mui/material';
 import AvatarEditor from 'react-avatar-editor';
 import liff from '@line/liff';
+import { TailSpin } from 'react-loader-spinner';
+
 
 function App() {
   var editor = "";
@@ -21,6 +23,7 @@ function App() {
   const [noteError, setNoteError] = useState('');
   const [nameError, setNameError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // liff関連のlocalStorageのキーのリストを取得
@@ -55,7 +58,7 @@ function App() {
       clearExpiredIdToken(id)
       await liff.init({ liffId: id })
       if (!liff.isLoggedIn()) {
-        liff.login();
+        //liff.login();
       } else {
         const token = liff.getIDToken()
         setIdToken(token);
@@ -116,6 +119,8 @@ function App() {
       setDescriptionError('');
     }
 
+    setLoading(true);
+
     if (name && heading && description && image) {
       const formData = new FormData();
       formData.append('name', name);
@@ -138,13 +143,16 @@ function App() {
         .then((response) => {
           // APIの応答を処理
           if (response.ok) {
+            setLoading(false);
             liff.closeWindow();
           } else {
+            setLoading(false);
             liff.closeWindow();
           }
         })
         .catch((error) => {
           console.error('APIリクエストエラー', error);
+          setLoading(false);
           liff.closeWindow();
         });
     }
@@ -220,8 +228,18 @@ function App() {
 
 
         <Box mt={2}>
-          <Button variant="contained" color="primary" onClick={handleConfirmation}>
-            確認
+          <TailSpin
+            height={80}
+            width={80}
+            color="#4fa94d"
+            ariaLabel="tail-spin-loading"
+            radius={1}
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={loading}
+          />
+          <Button variant="contained" color="primary" onClick={handleConfirmation} disabled={loading}>
+            登録
           </Button>
         </Box>
       </form>
