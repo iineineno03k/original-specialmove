@@ -58,7 +58,7 @@ function App() {
       clearExpiredIdToken(id)
       await liff.init({ liffId: id })
       if (!liff.isLoggedIn()) {
-        //liff.login();
+        liff.login();
       } else {
         const token = liff.getIDToken()
         setIdToken(token);
@@ -188,6 +188,7 @@ function App() {
         />
         <br />
         <TextField
+          multiline 
           rowsMin={3}
           placeholder="概要"
           fullWidth
