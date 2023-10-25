@@ -112,6 +112,12 @@ function App() {
       setNoteError('');
     }
 
+    if (heading.length > 15) {
+      setNoteError('ひとことは15文字までです.')
+    } else {
+      setNoteError('');
+    }
+
     if (!description) {
       setDescriptionError('概要は必須項目です.');
       return;
@@ -188,7 +194,7 @@ function App() {
         />
         <br />
         <TextField
-          multiline 
+          multiline
           rowsMin={3}
           placeholder="概要"
           fullWidth
