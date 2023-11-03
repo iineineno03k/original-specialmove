@@ -6,3 +6,24 @@
   color: #2c3e50;
   margin-top: 60px;
 }
+
+/* App.css */
+.root {
+  width: 100%;
+  min-height: 100vh; /* 画面の最小の高さをビューポートの100%に */
+  position: relative; /* 子要素のポジショニングの基準に */
+  overflow: hidden; /* 必要に応じて修正 */
+}
+
+.overlay {
+  position: fixed; /* 画面に固定 */
+  top: 0;
+  left: 0;
+  width: 100%; /* 幅を100%に */
+  height: 100%; /* 高さを100%に */
+  background-color: rgba(0, 0, 0, 0.5); /* 黒色の半透明 */
+  z-index: 9999; /* 他の要素の上に表示 */
+  display: flex;
+  justify-content: center; /* 中央揃え */
+  align-items: center; /* 中央揃え */
+}
