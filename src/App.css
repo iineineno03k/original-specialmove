@@ -7,14 +7,6 @@
   margin-top: 60px;
 }
 
-/* App.css */
-.root {
-  width: 100%;
-  min-height: 100vh; /* 画面の最小の高さをビューポートの100%に */
-  position: relative; /* 子要素のポジショニングの基準に */
-  overflow: hidden; /* 必要に応じて修正 */
-}
-
 .overlay {
   position: fixed; /* 画面に固定 */
   top: 0;

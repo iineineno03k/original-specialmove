@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Container, TextField, Button, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import AvatarEditor from 'react-avatar-editor';
 import liff from '@line/liff';
@@ -64,12 +64,7 @@ function App() {
   const [nameError, setNameError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  window.addEventListener('beforeunload', function (e) {
-    // デフォルトのテキストはカスタマイズできません
-    e.preventDefault();
-    e.returnValue = ''; // ほとんどのブラウザでは、この設定で確認ダイアログが表示されます
-  });
+  const editorRef = useRef(null);
 
   useEffect(() => {
     // liff関連のlocalStorageのキーのリストを取得
@@ -110,7 +105,7 @@ function App() {
         setIdToken(token);
       }
     }
-    //initializeLiff('2001116233-KA7Znp4R');
+    initializeLiff('2001116233-KA7Znp4R');
   }, []);
 
   const handleImageChange = (e) => {
@@ -121,12 +116,10 @@ function App() {
       cropperOpen: true
     });
   };
-  const setEditorRef = (ed) => {
-    editor = ed;
-  };
-  const handleSave = (e) => {
-    if (setEditorRef) {
-      const canvasScaled = editor.getImageScaledToCanvas();
+
+  const handleSave = () => {
+    if (editorRef.current) {
+      const canvasScaled = editorRef.current.getImageScaledToCanvas();
       const croppedImg = canvasScaled.toDataURL();
 
       setImage({
@@ -214,7 +207,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="sm">
+      <Container maxWidth={false}>
         {loading && (
           <div className="overlay">
             <TailSpin
@@ -290,7 +283,7 @@ function App() {
             >
               {image.img && (
                 <AvatarEditor
-                  ref={setEditorRef}
+                  ref={editorRef}
                   image={image.img}
                   width={200}
                   height={200}

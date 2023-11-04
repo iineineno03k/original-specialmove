@@ -82,7 +82,7 @@ const SpecialMoveCard: React.FC<Props> = ({ name, furigana, heading, description
                 <Typography textAlign={"center"} variant="h6" component="div" sx={{ ml: 2, mr: 2 }}>
                     {heading}
                 </Typography>
-            </Card>
+            </Card >
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -145,7 +145,7 @@ const SpecialMoveCard: React.FC<Props> = ({ name, furigana, heading, description
                     <Typography textAlign={"center"} variant="h5" component="div">
                         {name}
                     </Typography>
-                    <Typography textAlign={"center"} variant="h6" component="div" >
+                    <Typography textAlign={"center"} variant="subtitle1" component="div" >
                         {heading}
                     </Typography>
                     <Typography variant="body1" style={{ whiteSpace: 'pre-line' }} sx={{ mt: 2 }}>
@@ -153,7 +153,7 @@ const SpecialMoveCard: React.FC<Props> = ({ name, furigana, heading, description
                     </Typography>
                 </Box>
             </Dialog>
-        </Box>
+        </Box >
     );
 };
 
