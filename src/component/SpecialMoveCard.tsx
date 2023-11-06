@@ -61,10 +61,10 @@ const SpecialMoveCard: React.FC<Props> = ({ name, furigana, heading, description
                     />
 
                     <CardContent sx={{ flexGrow: 1, p: 1, minWidth: 0 }}>
-                        <Typography gutterBottom variant="caption" display="block" align="center">
+                        <Typography gutterBottom variant="caption" display="block" textAlign="center">
                             {furigana}
                         </Typography>
-                        <Typography gutterBottom variant="h5" component="div">
+                        <Typography gutterBottom variant="h5" component="div" textAlign="center">
                             {name}
                         </Typography>
                         <Box mt={1.5} display="flex" flexDirection="column">
@@ -79,7 +79,7 @@ const SpecialMoveCard: React.FC<Props> = ({ name, furigana, heading, description
                         </Box>
                     </CardContent>
                 </Box>
-                <Typography textAlign={"center"} variant="h6" component="div" sx={{ ml: 2, mr: 2 }}>
+                <Typography textAlign={"center"} variant="h6" component="div" sx={{ ml: 1.5, mr: 1.5 }}>
                     {heading}
                 </Typography>
             </Card >
