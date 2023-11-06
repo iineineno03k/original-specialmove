@@ -8,14 +8,45 @@
 }
 
 .overlay {
-  position: fixed; /* 画面に固定 */
+  position: fixed;
+  /* 画面に固定 */
   top: 0;
   left: 0;
-  width: 100%; /* 幅を100%に */
-  height: 100%; /* 高さを100%に */
-  background-color: rgba(0, 0, 0, 0.5); /* 黒色の半透明 */
-  z-index: 9999; /* 他の要素の上に表示 */
+  width: 100%;
+  /* 幅を100%に */
+  height: 100%;
+  /* 高さを100%に */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 黒色の半透明 */
+  z-index: 9999;
+  /* 他の要素の上に表示 */
   display: flex;
-  justify-content: center; /* 中央揃え */
-  align-items: center; /* 中央揃え */
+  justify-content: center;
+  /* 中央揃え */
+  align-items: center;
+  /* 中央揃え */
+}
+
+/* 全体のマージンとパディングをリセット */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* スクロールバーを隠す */
+}
+
+/* ルートコンテナに適用するスタイル */
+.rootContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  /* ビューポートの高さに合わせる */
+  width: 100vw;
+  /* ビューポートの幅に合わせる */
+  background: url('https://pub-5c00d9cd767343259424b03f8a52941a.r2.dev/和.jpg') no-repeat center center fixed;
+  background-size: cover;
 }

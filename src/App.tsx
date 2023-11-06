@@ -99,7 +99,7 @@ function App() {
       clearExpiredIdToken(id)
       await liff.init({ liffId: id })
       if (!liff.isLoggedIn()) {
-        liff.login();
+        //liff.login();
       } else {
         const token = liff.getIDToken()
         setIdToken(token);
@@ -205,126 +205,128 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container maxWidth={false}>
-        {loading && (
-          <div className="overlay">
-            <TailSpin
-              height={80}
-              width={80}
-              color="#4fa94d"
-              ariaLabel="tail-spin-loading"
-              radius={1}
-              visible={true}
+    <div className='rootContainer'>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container maxWidth={false}>
+          {loading && (
+            <div className="overlay">
+              <TailSpin
+                height={80}
+                width={80}
+                color="#4fa94d"
+                ariaLabel="tail-spin-loading"
+                radius={1}
+                visible={true}
+              />
+            </div>
+          )}
+          <Typography variant="h5" align="center" color="primary" sx={{ mt: 2 }}>
+            オレ技生成
+          </Typography>
+          <SpecialMoveCard
+            name={name}
+            furigana={furigana}
+            heading={heading}
+            description={description}
+            croppedImg={image.croppedImg}
+          />
+          <form>
+            <TextField
+              label="名前"
+              fullWidth
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              error={!!nameError}
+              helperText={nameError}
             />
-          </div>
-        )}
-        <Typography variant="h5" align="center" color="primary" sx={{ mt: 2 }}>
-          必殺技フォーム
-        </Typography>
-        <SpecialMoveCard
-          name={name}
-          furigana={furigana}
-          heading={heading}
-          description={description}
-          croppedImg={image.croppedImg}
-        />
-        <form>
-          <TextField
-            label="名前"
-            fullWidth
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            error={!!nameError}
-            helperText={nameError}
-          />
-          <br />
-          <TextField
-            label="ふりがな"
-            fullWidth
-            value={furigana}
-            onChange={(e) => setFurigana(e.target.value)}
-          />
-          <br />
-          <TextField
-            label="ひとこと"
-            fullWidth
-            value={heading}
-            onChange={(e) => setHeading(e.target.value)}
-            error={!!noteError}
-            helperText={noteError}
-          />
-          <br />
-          <TextField
-            multiline
-            placeholder="概要"
-            fullWidth
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            error={!!descriptionError}
-            helperText={descriptionError}
-          />
-          <br />
-          <input type="file" accept="image/*" onChange={handleImageChange} />
-          <Dialog
-            open={image.cropperOpen}
-            maxWidth="lg"
-            fullWidth
-            aria-labelledby="image-cropper-dialog"
-          >
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-              padding={2}
-              minHeight={300}
+            <br />
+            <TextField
+              label="ふりがな"
+              fullWidth
+              value={furigana}
+              onChange={(e) => setFurigana(e.target.value)}
+            />
+            <br />
+            <TextField
+              label="ひとこと"
+              fullWidth
+              value={heading}
+              onChange={(e) => setHeading(e.target.value)}
+              error={!!noteError}
+              helperText={noteError}
+            />
+            <br />
+            <TextField
+              multiline
+              placeholder="概要"
+              fullWidth
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              error={!!descriptionError}
+              helperText={descriptionError}
+            />
+            <br />
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            <Dialog
+              open={image.cropperOpen}
+              maxWidth="lg"
+              fullWidth
+              aria-labelledby="image-cropper-dialog"
             >
-              {image.img && (
-                <AvatarEditor
-                  ref={editorRef}
-                  image={image.img}
-                  width={200}
-                  height={200}
-                  border={10}
-                  scale={scale}
-                />
-              )}
               <Box
                 display="flex"
+                flexDirection="column"
                 justifyContent="center"
                 alignItems="center"
-                marginTop={2}
+                padding={2}
+                minHeight={300}
               >
-                <input
-                  type="range"
-                  min="0.5"
-                  max="2"
-                  step="0.01"
-                  value={scale}
-                  onChange={(e) => setScale(parseFloat(e.target.value))}
-                />
+                {image.img && (
+                  <AvatarEditor
+                    ref={editorRef}
+                    image={image.img}
+                    width={200}
+                    height={200}
+                    border={10}
+                    scale={scale}
+                  />
+                )}
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  marginTop={2}
+                >
+                  <input
+                    type="range"
+                    min="0.5"
+                    max="2"
+                    step="0.01"
+                    value={scale}
+                    onChange={(e) => setScale(parseFloat(e.target.value))}
+                  />
+                </Box>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  marginTop={2}
+                >
+                  <Button variant="contained" color="primary" onClick={handleSave}>
+                    切り取る
+                  </Button>
+                </Box>
               </Box>
-              <Box
-                display="flex"
-                justifyContent="center"
-                marginTop={2}
-              >
-                <Button variant="contained" color="primary" onClick={handleSave}>
-                  切り取る
-                </Button>
-              </Box>
+            </Dialog>
+            <Box mt={2} textAlign={"right"} >
+              <Button variant="contained" color="primary" onClick={handleConfirmation} disabled={loading}>
+                登録
+              </Button>
             </Box>
-          </Dialog>
-          <Box mt={2} textAlign={"right"} >
-            <Button variant="contained" color="primary" onClick={handleConfirmation} disabled={loading}>
-              登録
-            </Button>
-          </Box>
-        </form>
-      </Container >
-    </ThemeProvider>
+          </form>
+        </Container >
+      </ThemeProvider>
+    </div>
   );
 }
 
