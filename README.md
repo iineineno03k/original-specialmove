@@ -1,4 +1,5 @@
 - オレ技メーカーのフロントエンド（LIFF・React/TypeScript）
+- 「オレ技生成」の画面（画像左上）
 ## オレ技メーカーについて
 - [LINEアカウント登録はこちら](https://line.me/R/ti/p/%40415lutsr)
 - [アプリ説明サイト（ProtoPedia）](https://protopedia.net/prototype/4938)
